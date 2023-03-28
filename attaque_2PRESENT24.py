@@ -5,6 +5,14 @@ m2, c2 = int("a92a08", 16), int("d68fb5", 16)
 
 
 def attaque_milieu(m1, c1, m2, c2):
+    """
+    initialise l'attaque par milieu
+    dans un premier temp cherche les cles
+    candidate entre le message clair m1
+    et crypte c1 et ensuite compare
+    k1 et k2 cle sur m2 et c2 pour ressortir
+    la ou les possible bonnes cle
+    """
     cle1 = cle_candidate(m1, c1)
     print(cle1[:25])
     print("check, cle candidate")
@@ -18,6 +26,12 @@ def attaque_milieu(m1, c1, m2, c2):
 
 
 def cle_candidate(m, c):
+    """
+    cherche les cle candidate entre un message
+    clair m et un crypte c et ensuite les compare
+    pour les trouver via la fonction tri_cle et
+    ressors la liste de couple k1 et k2 de cle
+    """
     present24_atta_liste_m = []
     present24_atta_liste_c = []
     for i in range(2**24):
@@ -29,6 +43,12 @@ def cle_candidate(m, c):
 
 
 def tri_cle(m_crypt, c_decrypt):
+    """
+    prend en entrer 2 liste de tuple
+    (message, cle) les tri puis les compare
+    pour ressortir les couple k1 et k2 cle
+    possible
+    """
     result = []
     m_crypt = sorted(m_crypt)
     c_decrypt = sorted(c_decrypt)
