@@ -84,13 +84,14 @@ def substitution(message, boite_s):
     et ressors la substitution en fonction
     de la constante BOITE_S
     """
-    hexa = format(message, "x")
-    hexa = ('0' * (6 - len(hexa))) + hexa
-    message = 0
-    for i in hexa:
-        message *= 16
-        message += boite_s[int(i, 16)]
-    return message
+    resultat = 0
+    for i in range(20, -1, -4):
+        resultat <<= 4
+        slic = message >> i
+        message ^= slic << i
+        resultat |= boite_s[slic]
+
+    return resultat
 
 
 def permutation(message, table_permutation):
@@ -108,15 +109,15 @@ def permutation(message, table_permutation):
         result |= ((message >> i) & 1) << table_permutation[i]
     return result
 
-print(permutation(4376284, TABLE_PERMUTATION))
 
 def testtest():
     start = time.time()
-    for i in range(1<<18):
-        permutation(i, TABLE_PERMUTATION)
+    for _ in range(10):
+        for i in range(1<<24):
+            substitution(i, TABLE_PERMUTATION)
     print(time.time()-start)
 
-testtest()
+#testtest()
 
 print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
 print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))

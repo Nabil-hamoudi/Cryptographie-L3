@@ -108,4 +108,11 @@ def permutation(message, table_permutation):
         result += i
     return int(result, 2)
 
-print(permutation(4376284, TABLE_PERMUTATION))
+def testtest():
+    start = time.time()
+    for _ in range(10):
+        for i in range(1<<24):
+            substitution(i, TABLE_PERMUTATION)
+    print(time.time()-start)
+
+#testtest()
