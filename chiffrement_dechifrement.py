@@ -1,3 +1,4 @@
+import time
 # afin de gagner des performance on passe les chaine hexadecimale en int en base decimal
 # pour eviter de perdre des performances
 BOITE_S = [12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2]
@@ -107,5 +108,4 @@ def permutation(message, table_permutation):
         result += i
     return int(result, 2)
 
-print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+print(permutation(4376284, TABLE_PERMUTATION))

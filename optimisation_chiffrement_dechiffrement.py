@@ -7,6 +7,7 @@ REVERSE_BOITE_S = [5, 14, 15, 8, 12, 1, 2, 13, 11, 4, 6, 3, 0, 7, 9, 10]
 TABLE_PERMUTATION = [0, 6, 12, 18, 1, 7, 13, 19, 2, 8, 14, 20, 3, 9, 15, 21, 4, 10, 16, 22, 5, 11, 17, 23]
 REVERSE_TABLE_PERMUTATION = [0, 4, 8, 12, 16, 20, 1, 5, 9, 13, 17, 21, 2, 6, 10, 14, 18, 22, 3, 7, 11, 15, 19, 23]
 TOURS = 10
+TOURS = 10
 
 def init_sous_cle_cadencement(cle):
     """
@@ -99,15 +100,23 @@ def permutation(message, table_permutation):
     de la constante TABLE_PERMUTATION
     """
     result = 0
-    for i, j in enumerate(table_permutation):
-        bit = (message >> (23 - i)) & 1
-        result |= (bit << (23 - j))
+#    while 0 < message.bit_length():
+#        result |= (message & 1) << table_permutation[message.bit_length()]
+#        message >>= 1
+
+    for i in range(message.bit_length()):
+        result |= ((message >> i) & 1) << table_permutation[i]
     return result
+
+print(permutation(4376284, TABLE_PERMUTATION))
 
 def testtest():
     start = time.time()
     for i in range(1<<18):
-        chiffrement_present(int("f955b9", 16), int("d1bd2d", 16))
+        permutation(i, TABLE_PERMUTATION)
     print(time.time()-start)
 
 testtest()
+
+print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
