@@ -107,3 +107,5 @@ def permutation(message, table_permutation):
         result += i
     return int(result, 2)
 
+print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
