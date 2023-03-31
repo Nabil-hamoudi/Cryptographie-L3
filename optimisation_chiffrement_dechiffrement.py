@@ -1,9 +1,11 @@
+import time
+
 # afin de gagner des performance on passe les chaine hexadecimale en int en base decimal
 # pour eviter de perdre des performances
 BOITE_S = [12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2]
 REVERSE_BOITE_S = [5, 14, 15, 8, 12, 1, 2, 13, 11, 4, 6, 3, 0, 7, 9, 10]
-TABLE_PERMUTATION = [23, 17, 11, 5, 22, 16, 10, 4, 21, 15, 9, 3, 20, 14, 8, 2, 19, 13, 7, 1, 18, 12, 6, 0]
-REVERSE_TABLE_PERMUTATION = [23, 19, 15, 11, 7, 3, 22, 18, 14, 10, 6, 2, 21, 17, 13, 9, 5, 1, 20, 16, 12, 8, 4, 0]
+TABLE_PERMUTATION = [0, 6, 12, 18, 1, 7, 13, 19, 2, 8, 14, 20, 3, 9, 15, 21, 4, 10, 16, 22, 5, 11, 17, 23]
+REVERSE_TABLE_PERMUTATION = [0, 4, 8, 12, 16, 20, 1, 5, 9, 13, 17, 21, 2, 6, 10, 14, 18, 22, 3, 7, 11, 15, 19, 23]
 TOURS = 10
 
 def init_sous_cle_cadencement(cle):
@@ -97,10 +99,15 @@ def permutation(message, table_permutation):
     de la constante TABLE_PERMUTATION
     """
     result = 0
-    bina = format(message, 'b')
-    for i, j in enumerate(bina[::-1]):
-        result += (2**table_permutation[i]) * int(j)
+    for i, j in enumerate(table_permutation):
+        bit = (message >> (23 - i)) & 1
+        result |= (bit << (23 - j))
     return result
 
-print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+def testtest():
+    start = time.time()
+    for i in range(1<<18):
+        chiffrement_present(int("f955b9", 16), int("d1bd2d", 16))
+    print(time.time()-start)
+
+testtest()
