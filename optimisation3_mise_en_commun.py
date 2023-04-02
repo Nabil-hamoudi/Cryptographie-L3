@@ -17,17 +17,12 @@ def dechiffrement_present(message_crypte, cle):
     la fonction de cadencement de cle et ressors le message
     crypte
     """
-    sous_cles = [0 for _ in range(0, 11)]
-    sous_cles[0], cle = 0, cle << 56
-
-    for i in range(1, 11):
-        sous_cles[i], cle = sous_cles_suivante(cle, i, BOITE_S_DECALE)
-
-    message_crypte ^= sous_cles.pop(-1)
-    for _ in range(10):
+    sous_cles = sous_cles_suivante(cle, BOITE_S_DECALE)
+    for i in sous_cles[::-1]:
+        message_crypte ^= i
         message_crypte = inverse_permutation(message_crypte)
         message_crypte = substitution(message_crypte, REVERSE_BOITE_S)
-        message_crypte ^= sous_cles.pop(-1)
+    message_crypte ^= 0
 
     return message_crypte
 
@@ -39,30 +34,31 @@ def chiffrement_present(message, cle):
     la fonction de cadencement de cle et ressors le message
     crypte
     """
-    sous_cle, cle = 0, cle << 56
-    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
-        message ^= sous_cle
+    message ^= 0
+    for i in sous_cles_suivante(cle, BOITE_S_DECALE):
         message = substitution(message, BOITE_S)
         message = permutation(message)
-        sous_cle, cle = sous_cles_suivante(cle, i, BOITE_S_DECALE)
-    message ^= sous_cle
+        message ^= i
 
     # ici le message retournee est le message crypté
     return message
 
 
-
-def sous_cles_suivante(cle, nombre_tour, boite_s):
+def sous_cles_suivante(cle, boite_s):
     """
     fait un nouveau tour de cle
     """
-    # 1er etape
-    cle = (cle << 61) & 0xffffffffffffffffffff | cle >> 19
-    # 2eme etape
-    cle = boite_s[cle >> 76] + (cle & 0xfffffffffffffffffff)
-    # 3eme etape
-    cle ^= nombre_tour << 15
-    return (cle >> 16) & 0xffffff, cle
+    cle <<= 56
+    sous_cles = []
+    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        # 1er etape
+        cle = (cle << 61) & 0xffffffffffffffffffff | cle >> 19
+        # 2eme etape
+        cle = boite_s[cle >> 76] + (cle & 0xfffffffffffffffffff)
+        # 3eme etape
+        cle ^= i << 15
+        sous_cles.append((cle >> 16) & 0xffffff)
+    return sous_cles
 
 
 def substitution(entree, liste_substitution):
@@ -110,7 +106,7 @@ def permutation_step(value, mask, shift):
 def testtest():
     start = time.time()
     for i in range(1<<18):
-        dechiffrement_present(i, i)
+        chiffrement_present(i, i)
     print(time.time()-start)
 
 testtest()
