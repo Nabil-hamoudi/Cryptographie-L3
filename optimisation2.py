@@ -14,6 +14,27 @@ BOITE_S = [12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2]
 REVERSE_BOITE_S = [5, 14, 15, 8, 12, 1, 2, 13, 11, 4, 6, 3, 0, 7, 9, 10]
 
 
+def dechiffrement_present(message_crypte, cle):
+    """
+    Prend en entree le message crypte et les 11 sous_cles
+    issue de la cle K a partir de la fonction de
+    la fonction de cadencement de cle et ressors le message
+    crypte
+    """
+    sous_cles = [0 for _ in range(0, 11)]
+    sous_cles[0], cle = 0, cle << 56
+
+    for i in range(1, 11):
+        sous_cles[i], cle = sous_cles_suivante(cle, i, BOITE_S_DECALE)
+
+    message_crypte ^= sous_cles.pop(-1)
+    for _ in range(10):
+        message_crypte = inverse_permutation(message_crypte)
+        message_crypte = substitution(message_crypte, REVERSE_BOITE_S)
+        message_crypte ^= sous_cles.pop(-1)
+
+    return message_crypte
+
 
 def chiffrement_present(message, cle):
     """
@@ -103,10 +124,12 @@ def testtest():
     for _ in range(2):
         for _ in range(10):
             for i in range(1<<24):
-                substitution(i, BOITE_S)
+                chiffrement_present(0, i)
+                dechiffrement_present(0, i)
     print(time.time()-start)
 
-#testtest()
+testtest()
 
 
-print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+#print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+#print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
