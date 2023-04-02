@@ -112,12 +112,16 @@ def permutation(message, table_permutation):
 
 def testtest():
     start = time.time()
-    for _ in range(10):
-        for i in range(1<<24):
-            substitution(i, TABLE_PERMUTATION)
+    for _ in range(2):
+        for _ in range(10):
+            for i in range(1<<24):
+                permutation(i, TABLE_PERMUTATION)
     print(time.time()-start)
+
+print(sous_cles_suivante('00000000000000000001111000000000000000000000000000000000000000000000000000000000', 4, BOITE_S))
 
 #testtest()
 
+
 print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+#print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
