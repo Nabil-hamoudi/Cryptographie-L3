@@ -6,10 +6,6 @@ BOITE_S_DECALE =  [0xc0000000000000000000, 0x50000000000000000000, 0x60000000000
                    0xd0000000000000000000, 0x30000000000000000000, 0xe0000000000000000000, 0xf0000000000000000000, 0x80000000000000000000, 0x40000000000000000000, 
                    0x70000000000000000000, 0x10000000000000000000, 0x20000000000000000000
                    ]
-REVERSE_BOITE_S_DECALE = [0x50000000000000000000, 0xe0000000000000000000, 0xf0000000000000000000, 0x80000000000000000000, 0xc0000000000000000000, 0x10000000000000000000,
-                          0x20000000000000000000, 0xd0000000000000000000, 0xb0000000000000000000, 0x40000000000000000000, 0x60000000000000000000, 0x30000000000000000000, 0x0, 
-                          0x70000000000000000000, 0x90000000000000000000, 0xa0000000000000000000
-                          ]
 BOITE_S = [12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2]
 REVERSE_BOITE_S = [5, 14, 15, 8, 12, 1, 2, 13, 11, 4, 6, 3, 0, 7, 9, 10]
 
@@ -61,9 +57,9 @@ def sous_cles_suivante(cle, nombre_tour, boite_s):
     fait un nouveau tour de cle
     """
     # 1er etape
-    cle = Rotation_Gauche(cle, 61, 80)
+    cle = (cle << 61) & 0x1fffffffffffffff | cle >> 19
     # 2eme etape
-    cle = BOITE_S_DECALE[cle >> 76] | (cle & 0xfffffffffffffffffff)
+    cle = boite_s[cle >> 76] | (cle & 0xfffffffffffffffffff)
     # 3eme etape
     cle ^= nombre_tour << 15
     return (cle >> 16) & 0xffffff, cle
@@ -112,11 +108,6 @@ def permutation(value):
 def permutation_step(value, mask, shift):
     result = ((value >> shift) ^ value) & mask
     return (value ^ result) ^ (result << shift)
-
-
-def Rotation_Gauche(nombre, decalage, taille):
-    mask_taille_limite = (1 << taille) - 1
-    return ((nombre << decalage) & mask_taille_limite) | (nombre >> (taille - decalage))
 
 
 def testtest():
