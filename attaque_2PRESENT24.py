@@ -1,4 +1,4 @@
-from optimisation_chiffrement_dechiffrement import chiffrement_present, dechiffrement_present
+from optimisation3_mise_en_commun import chiffrement_present, dechiffrement_present
 import time
 
 m1, c1 = int("36ca6c", 16), int("0ded87", 16)
