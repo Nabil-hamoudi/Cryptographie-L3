@@ -57,7 +57,7 @@ def sous_cles_suivante(cle, nombre_tour, boite_s):
     fait un nouveau tour de cle
     """
     # 1er etape
-    cle = (cle << 61) & 0xffffffffffffffffffff | cle >> 19
+    cle = (cle << 61) & 0x1fffffffffffffff | cle >> 19
     # 2eme etape
     cle = boite_s[cle >> 76] | (cle & 0xfffffffffffffffffff)
     # 3eme etape
@@ -109,6 +109,7 @@ def permutation_step(value, mask, shift):
     result = ((value >> shift) ^ value) & mask
     return (value ^ result) ^ (result << shift)
 
+print(substitution(10267135, BOITE_S))
 
 def testtest():
     start = time.time()
