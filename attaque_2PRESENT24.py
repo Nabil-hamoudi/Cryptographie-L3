@@ -1,4 +1,5 @@
-from chiffrement_dechifrement import chiffrement_present, dechiffrement_present
+from optimisation_chiffrement_dechiffrement import chiffrement_present, dechiffrement_present
+import time
 
 m1, c1 = int("36ca6c", 16), int("0ded87", 16)
 m2, c2 = int("a92a08", 16), int("d68fb5", 16)
@@ -57,6 +58,11 @@ def tri_cle(m_crypt, c_decrypt):
             result.append((m_crypt[i][1], c_decrypt[i][1]))
     return result
 
+def testtest():
+    start = time.time()
+    for i, j in attaque_milieu(m1, c1, m2, c2):
+        print("k1 = " + format(i, 'x') + ", " + "k2 = " + format(j, 'x'))
+    print(time.time()-start)
 
-for i, j in attaque_milieu(m1, c1, m2, c2):
-    print("k1 = " + format(i, 'x') + ", " + "k2 = " + format(j, 'x'))
+testtest()
+
