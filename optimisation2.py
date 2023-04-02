@@ -57,7 +57,7 @@ def sous_cles_suivante(cle, nombre_tour, boite_s):
     fait un nouveau tour de cle
     """
     # 1er etape
-    cle = (cle << 61) & 0x1fffffffffffffff | cle >> 19
+    cle = (cle << 61) & 0xffffffffffffffffffff | cle >> 19
     # 2eme etape
     cle = boite_s[cle >> 76] | (cle & 0xfffffffffffffffffff)
     # 3eme etape
@@ -119,8 +119,8 @@ def testtest():
                 dechiffrement_present(0, i)
     print(time.time()-start)
 
-testtest()
+#testtest()
 
 
-#print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-#print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
