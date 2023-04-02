@@ -124,4 +124,4 @@ print(sous_cles_suivante('000000000000000000011110000000000000000000000000000000
 
 
 print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-#print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
