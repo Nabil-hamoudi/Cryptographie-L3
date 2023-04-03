@@ -22,7 +22,6 @@ def dechiffrement_present(message_crypte, cle):
         message_crypte ^= i
         message_crypte = inverse_permutation(message_crypte)
         message_crypte = substitution(message_crypte, REVERSE_BOITE_S)
-    message_crypte ^= 0
 
     return message_crypte
 
@@ -34,7 +33,6 @@ def chiffrement_present(message, cle):
     la fonction de cadencement de cle et ressors le message
     crypte
     """
-    message ^= 0
     for i in sous_cles_generation(cle, BOITE_S_DECALE):
         message = substitution(message, BOITE_S)
         message = permutation(message)
@@ -105,13 +103,13 @@ def permutation_step(value, mask, shift):
 
 def testtest():
     start = time.time()
-    for i in range(1<<24):
+    for i in range(1<<21):
         chiffrement_present(i, i)
         dechiffrement_present(i, i)
     print(time.time()-start)
 
-testtest()
+#testtest()
 
 
-print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
-print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
+#print(format(chiffrement_present(int("f955b9", 16), int("d1bd2d", 16)), 'x'))
+#print(format(dechiffrement_present(int("47a929", 16), int("d1bd2d", 16)), 'x'))
