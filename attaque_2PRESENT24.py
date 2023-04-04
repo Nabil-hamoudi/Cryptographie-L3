@@ -1,5 +1,5 @@
 from sys import argv
-from optimisation3_mise_en_commun import *
+from chiffrement_dechiffrement import *
 import time
 
 
@@ -7,27 +7,31 @@ import time
 #Les listes ont pour indice le message ou le chiffré
 #Les listes ont pour valeur une liste de clés qui génère ce message ou chiffré
 def generation_listes(clair,chiffre):
-    start = time.time()
-    lm, lc = [[] for x in range(1<<24)], [[] for x in range(1<<24)]
-    print("Listes Lm et Lc allouees en "+"%.2f" % (time.time()-start)+"s, generation des listes ...")
-    start = time.time()
-    for cle in range(1<<24):
-        sous_cles = sous_cles_generation(cle, BOITE_S_DECALE)
-    
-        for i in sous_cles:
-            clair = substitution(clair, BOITE_S)
-            clair = permutation(clair)
-            clair ^= i
-        lm[clair].append(cle)
-    
-        for i in sous_cles[::-1]:
-            chiffre ^= i
-            chiffre = inverse_permutation(chiffre)
-            chiffre = substitution(chiffre, REVERSE_BOITE_S)
-        lc[chiffre].append(cle)
+	start = time.time()
+	lm, lc = [[] for x in range(1<<24)], [[] for x in range(1<<24)]
+	print("Listes Lm et Lc allouees en "+"%.2f" % (time.time()-start)+"s, generation des listes ...")
+	start = time.time()
+	for cle in range(1<<24):
+		sous_cles = sous_cles_generation(cle, BOITE_S_DECALE)
 
-    print("Listes generees en "+"%.2f" % (time.time()-start)+"s")
-    return [lm,lc]
+		message = clair
+		# chiffrement
+		for i in sous_cles:
+			message = substitution(message, BOITE_S)
+			message = permutation(message)
+			message ^= i
+		lm[message].append(cle)
+
+		message = chiffre
+		# dechiffrement
+		for i in sous_cles[::-1]:
+			message ^= i
+			message = inverse_permutation(message)
+			message = substitution(message, REVERSE_BOITE_S)
+		lc[message].append(cle)
+
+	print("Listes generees en "+"%.2f" % (time.time()-start)+"s")
+	return [lm,lc]
 
 def trouver_collision(lmlc):
 	collisions = []
